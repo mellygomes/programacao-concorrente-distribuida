@@ -4,7 +4,7 @@ import threading as th
 
 # Função principal do QuickSort (Deixamos a função original aqui para podermos fazer as comparações de tempo, mas ela não será chamada)
 def quicksort(arr):
-    time.sleep(0.01) # Adicionamos um atraso artificial para conseguirmos medir a diferença nos tempos de execução
+    time.sleep(0.005) # Adicionamos um atraso artificial para conseguirmos medir a diferença nos tempos de execução
 
     if len(arr) <= 1:
         return arr
@@ -17,7 +17,7 @@ def quicksort(arr):
 
 # Função QuickSort com a implementação de threads
 def quicksort_paralelizada(arr):
-    time.sleep(0.01) # Atraso para medir o tempo
+    time.sleep(0.005) # Atraso para medir o tempo
 
     if len(arr) <= 1:
         return arr
@@ -44,7 +44,7 @@ def quicksort_paralelizada(arr):
     # ocorrência de DeadLock e portanto também a necessidade de usar threading.lock().  
 
 # Função para gerar números aleatórios
-def gerar_numeros_aleatorios(n=100, min_val=1, max_val=200):
+def gerar_numeros_aleatorios(n=200, min_val=1, max_val=200):
     return [random.randint(min_val, max_val) for _ in range(n)]
 
 # Função principal para testar o QuickSort
@@ -56,21 +56,22 @@ if __name__ == "__main__":
     print("Aguarde a execução...\n")
 
     # QuickSort normal
-    inicio = time.time()
+    inicio1 = time.time()
     numeros_ordenados = quicksort(numeros)
-    fim = time.time()
-    tempoExecucao = fim - inicio
+    fim1 = time.time()
+    tempoExecucao = fim1 - inicio1
 
     # QuickSort com threads
     inicio = time.time()
-    numeros_ordenados = quicksort_paralelizada(numeros)
+    numeros_ordenados_parallel = quicksort_paralelizada(numeros)
     fim = time.time()
     tempoExecucaoParalela = fim - inicio
    
-    print(f"Primeiros 10 números após a ordenação: {numeros_ordenados[:10]}")
+    print(f"Primeiros 10 números após a ordenação comum: {numeros_ordenados[:10]}")
+    print(f"Primeiros 10 números após a ordenação paralelizada: {numeros_ordenados_parallel[:10]}\n")
 
-    print(f"Tempo de execução sem paralelização: {tempoExecucao:.4f}") 
-    print(f"Tempo de execução com paralelização: {tempoExecucaoParalela:.4f}\n")    
+    print(f"Tempo de execução sem paralelização: {tempoExecucao:.4f}s.") 
+    print(f"Tempo de execução com paralelização: {tempoExecucaoParalela:.4f}s.\n")    
 
     print("Resultado do teste: ")
     if tempoExecucaoParalela < tempoExecucao:
