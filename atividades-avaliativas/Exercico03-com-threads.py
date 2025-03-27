@@ -7,7 +7,7 @@ def converter_para_preto_e_branco_manual_paralelizada():
     try:
         root = Tk()
         root.withdraw()
-        threads = []
+        threads = [] # Array que receberá as threads.
 
         caminho_imagem = filedialog.askopenfilename(
             title="Selecione uma imagem",
@@ -25,10 +25,13 @@ def converter_para_preto_e_branco_manual_paralelizada():
 
         # Itera sobre cada pixel da imagem
         for x in range(largura):
+            # Chamamos a função que irá percorrer cada coluna colocando-a em uma thread. Assim, cada vez que 
+            # ela for chamada, uma nova thread tratará da nova coluna individualmente.
             thread = th.Thread(target=lambda: processar_coluna(x, imagem, imagem_preto_branco, altura))
             threads.append(thread)
             thread.start()
 
+        # Join() em todas as threads da lista.
         for thread in threads:
             thread.join()
 
@@ -49,12 +52,14 @@ def converter_para_preto_e_branco_manual_paralelizada():
     except Exception as e:
         print(f"Erro ao processar a imagem: {e}")
 
+# Criamos a função que recebe o valor do primeiro pixel (x) e assim e assim percorre toda a coluna.
 def processar_coluna(x, imagem, imagem_preto_branco, altura):
     for y in range(altura):
         r, g, b = imagem.getpixel((x, y))
         luminancia = int(0.299 * r + 0.587 * g + 0.114 * b)
         imagem_preto_branco.putpixel((x, y), luminancia)
 
+# Função original, sem threads, para podermos comparar o tempo de execução.
 def converter_para_preto_e_branco_manual():
     try:
         root = Tk()
